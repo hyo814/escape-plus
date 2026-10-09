@@ -24,9 +24,8 @@ def board_list(request, category):
     if category not in Board.Category.values:
         raise Http404
     boards = Board.objects.filter(category=category)
-    page = int(request.GET.get('p', 1))
     paginator = Paginator(boards, 10)
-    page_obj = paginator.get_page(page)
+    page_obj = paginator.get_page(request.GET.get('p'))
     numbered_boards = []
     for index, board in enumerate(page_obj.object_list, start=page_obj.start_index()):
         board.list_number = paginator.count - index + 1
