@@ -84,3 +84,10 @@ class BoardCommentTests(TestCase):
 
         self.assertContains(response, '부모 댓글')
         self.assertContains(response, '대댓글')
+
+    def test_board_list_falls_back_to_first_page_for_non_numeric_page(self):
+        response = self.client.get(
+            reverse('board:board_list', args=[Board.Category.REVIEW]), {'p': 'abc'}
+        )
+
+        self.assertEqual(response.status_code, 200)
